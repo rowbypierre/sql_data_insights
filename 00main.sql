@@ -1,4 +1,4 @@
-/*
+
 create database sql_training;
 
 use sql_training
@@ -17,7 +17,7 @@ create table dbo.data_jobs_2024(
 	company_size		nvarchar(50)	null,
 	job_category		nvarchar(50)	null
 ); 
-*/
+
 
 /*
 1. What is the average `salary_in_usd` for each `job_title`?
