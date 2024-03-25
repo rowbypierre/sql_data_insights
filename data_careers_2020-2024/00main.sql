@@ -50,6 +50,7 @@ order by        Occurence desc;
 /*
 3. Which `employee_residence` countries appear most frequently in the dataset?
 */
+
 with residence_counts as (
     select     count(*) count, employee_residence 
     from       data_jobs_2024 
