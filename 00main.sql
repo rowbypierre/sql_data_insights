@@ -4,13 +4,13 @@ create database sql_training;
 use sql_training
 
 create table dbo.data_jobs_2024(
-	work_year			int		        null,
+	work_year			int	null,
 	experience_level	nvarchar(50)	null,
 	employment_type		nvarchar(50)	null,
-	job_title			nvarchar(50)	null,
-	salary				int		        null,
+	job_title		nvarchar(50)	null,
+	salary				int	null,
 	salary_currency		nvarchar(50)	null,
-	salary_in_usd		int		        null,
+	salary_in_usd			int	null,
 	employee_residence	nvarchar(50)	null,
 	work_setting		nvarchar(50)	null,
 	company_location	nvarchar(50)	null,
