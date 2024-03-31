@@ -8,12 +8,14 @@ with sample_size_by_category as (
     from        data_jobs_2024
     group by    job_category
 ),
+    
 mean_by_category as (
     select                                              job_category,  
                 try_cast(avg(salary_in_usd) as float)   avg_cat_salary
     from        data_jobs_2024
     group by    job_category
 ),
+    
 sum_sqrd_dif_by_category as (
     select      sum(sqrd_dif)   sum_sqrd_dif
                                 ,job_category                                                       
