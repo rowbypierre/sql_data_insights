@@ -24,6 +24,7 @@ with job_cat_metrics as (
             and         job_category = dj24.job_category)                               max_year_avg_pay       
     from    data_jobs_2024 dj24     
 ),
+    
 cagr_elements as (
     select                                          job_category
                 ,(max_work_year - min_work_year )   years                                        
