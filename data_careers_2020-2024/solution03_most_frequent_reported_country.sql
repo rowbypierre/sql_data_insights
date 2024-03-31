@@ -2,10 +2,12 @@
 3. Which `employee_residence` countries appear most frequently in the dataset?
 */
 with residence_counts as (
-    select     count(*) count, employee_residence 
+    select     count(*) count
+                ,employee_residence 
     from       data_jobs_2024 
     group by   employee_residence
 ),
+    
 max_count as (
     select     max(count) max_count
     from       residence_counts
