@@ -175,7 +175,7 @@ order by	round(AVG(price), 2) desc;
 
 select 		rs.region										"Region"
 			,rs.listings									"# Listings"
-			(select 	count(distinct region)
+			,(select 	count(distinct region)
 			from		vehicles
 			where 		region is not null) 				"Total # Regions"
 from 		(select distinct 	region 
@@ -185,7 +185,6 @@ inner join 	(select 			count(*)	listings
 			from 				vehicles
 			where 				region is not null
 			group by 			region) rs on r.region = rs.region
-
 order by 	rs.listings desc;
 
 /*
@@ -242,8 +241,8 @@ where 	title_status like 'salvage';
 with catalog as (
 	select 		manufacturer								Make
 				,model										Model
-				,concat('$', price) 						Cost
-				, row_number() over(order by price desc) 	Rank
+				,concat('$', price) 						"Cost"
+				,row_number() over(order by price desc) 	Rank
 	from 		vehicles
 	where 		price is not null
 	and 		price > 0
@@ -377,7 +376,7 @@ from 		sample s
 			,(select	avg(price) 	"x_bar"
 			from		sample) 	mean
 group by 	year
-order by 	year desc
+order by 	year desc;
 
 /*
 17. How many listings have images associated with them versus those that do not?
