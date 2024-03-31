@@ -4,13 +4,13 @@ create database sql_training;
 use sql_training
 
 create table dbo.data_jobs_2024(
-	work_year			int	null,
+	work_year			int				null,
 	experience_level	nvarchar(50)	null,
 	employment_type		nvarchar(50)	null,
-	job_title		nvarchar(50)	null,
-	salary				int	null,
+	job_title			nvarchar(50)	null,
+	salary				int				null,
 	salary_currency		nvarchar(50)	null,
-	salary_in_usd			int	null,
+	salary_in_usd		int				null,
 	employee_residence	nvarchar(50)	null,
 	work_setting		nvarchar(50)	null,
 	company_location	nvarchar(50)	null,
@@ -56,6 +56,7 @@ with residence_counts as (
     from       data_jobs_2024 
     group by   employee_residence
 ),
+	
 max_count as (
     select     max(count) max_count
     from       residence_counts
@@ -108,6 +109,7 @@ with average_salaries as (
                     )                                                   average_salary
     from            data_jobs_2024 dj24_1
 ),
+	
 rank_salaries as (
     select          *
                     ,row_number() over(order by average_salary desc)    rank 
@@ -300,12 +302,14 @@ with sample_size_by_category as (
     from        data_jobs_2024
     group by    job_category
 ),
+	
 mean_by_category as (
     select                                              job_category,  
                 try_cast(avg(salary_in_usd) as float)   avg_cat_salary
     from        data_jobs_2024
     group by    job_category
 ),
+	
 sum_sqrd_dif_by_category as (
     select      sum(sqrd_dif)   sum_sqrd_dif
                                 ,job_category                                                       
@@ -381,6 +385,7 @@ with job_cat_metrics as (
             and         job_category = dj24.job_category)                               max_year_avg_pay       
     from    data_jobs_2024 dj24     
 ),
+	
 cagr_elements as (
     select                                          job_category
                 ,(max_work_year - min_work_year )   years                                        
