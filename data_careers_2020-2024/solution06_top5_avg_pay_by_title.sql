@@ -11,6 +11,7 @@ with average_salaries as (
                     )                                                   average_salary
     from            data_jobs_2024 dj24_1
 ),
+    
 rank_salaries as (
     select          *
                     ,row_number() over(order by average_salary desc)    rank 
