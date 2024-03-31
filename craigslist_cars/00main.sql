@@ -31,7 +31,7 @@ create table vehicles (
 	posting_date 	date
 )
 
--- Alter columns, adjusting for data column widths.
+-- Alter columns and adjust for data column widths.
 alter table 	vehicles
 alter column 	id
 type 		numeric(20);
@@ -69,22 +69,22 @@ select 	case
 1. What is the average price of vehicles listed in the dataset?
 */
 
-select		concat('$',round(AVG(price), 2)) "Average Price"
-from 		vehicles 
-where 		price is not null
-and 		price > 0
-and 		price < 516999; -- cars priced beyond this amount are erroneous
+select	concat('$',round(AVG(price), 2)) "Average Price"
+from 	vehicles 
+where 	price is not null
+and 	price > 0
+and 	price < 516999; -- cars priced beyond this amount are erroneous
 
 /*
 2. How many vehicles are listed by each manufacturer, sorted by the number of listings in descending order?
 */
 
-select 		manufacturer	"Manufacturer" 
-		,count(*) 	"# of Listings"
-from 		vehicles
-where 		manufacturer is not null
-group by	manufacturer
-order by	count(*) desc;
+select 	manufacturer	"Manufacturer" 
+	,count(*) 	"# of Listings"
+from 			vehicles
+where 			manufacturer is not null
+group by		manufacturer
+order by		count(*) desc;
 
 /*
 3. What are the top 10 most common vehicle models listed in the dataset?
@@ -105,15 +105,15 @@ mc_rank as (
 	from  	model_count
 ) 
 
-select 		*
-from		mc_rank
-where		Rank < 11;
+select 	*
+from	mc_rank
+where	Rank < 11;
 
 /*
 4. How does the average odometer reading vary by vehicle year?
 */
 
-select 		Year			"Year"
+select 		year			"Year"
 		,ceiling(avg(odometer))	"Average Odometer Reading"	
 from		vehicles
 where 		odometer > 0
@@ -146,8 +146,7 @@ select 		fuel								"Fuel Type"
 		from 		vehicles
 		where		fuel is not null)
 		* 
-		100	
-			,2), '%') 						"Distribution"								
+		100	,2), '%') 						"Distribution"								
 from 		vehicles v
 where 		fuel is not null
 group by	fuel
@@ -183,26 +182,24 @@ inner join 	(select 		count(*)	listings
 		from 			vehicles
 		where 			region is not null
 		group by 		region) rs on r.region = rs.region
-
 order by 	rs.listings desc;
 
 /*
 9. What is the distribution of vehicle types listed, and what is the average price for each type?
 */
 
-select 		type							"Vehicle Type" 
-			,concat(
-			round(
-			cast(count(*) as numeric)
-			/
-			(select 	cast(count(*) as numeric)
-			from 		vehicles
-			where		fuel is not null)
-			* 
-			100	
-				,2), '%') 				"Distribution"
-			,concat('$',
-			round(AVG(price), 2)) 	 			"Average Price"
+select 		type					"Vehicle Type" 
+		,concat(
+		round(
+		cast(count(*) as numeric)
+		/
+		(select cast(count(*) as numeric)
+		from 	vehicles
+		where	fuel is not null)
+		* 
+		100	,2), '%') 			"Distribution"
+		,concat('$',
+		round(AVG(price), 2)) 	 		"Average Price"
 from 		vehicles v
 where 		type is not null
 and 		price is not null
@@ -238,20 +235,20 @@ where 	title_status like 'salvage';
 */
 
 with catalog as (
-	select 		manufacturer					Make
-			,model						Model
-			,concat('$', price) 				Cost
-			, row_number() over(order by price desc) 	Rank
-	from 		vehicles
-	where 		price is not null
-	and 		price > 0
-	and 		price < 516999
-	and 		manufacturer is not null
+	select 	manufacturer					Make
+		,model						Model
+		,concat('$', price) 				Cost
+		, row_number() over(order by price desc) 	Rank
+	from 	vehicles
+	where 	price is not null
+	and 	price > 0
+	and 	price < 516999
+	and 	manufacturer is not null
 )
 
-select 		*
-from 		catalog
-where 		Rank < 6;
+select 	*
+from 	catalog
+where 	Rank < 6;
 
 /*
 13. Can you find the correlation between vehicle price and odometer reading?
@@ -271,60 +268,59 @@ with sample as (
 ),
 
 elements as (
-	select 		price 			"x"
-			,odometer 		"y"
-			,price * odometer 	"xy"
-			,power(price, 2) 	"x2"
-			,power(odometer, 2) 	"y2"
-	from 		sample
+	select 	price 			"x"
+		,odometer 		"y"
+		,price * odometer 	"xy"
+		,power(price, 2) 	"x2"
+		,power(odometer, 2) 	"y2"
+	from 	sample
 ),
 
 agg_elements as(
-	select 		sum(x) 					sum_x
-				,sum(y)				sum_y
-				,cast(sum(xy) as numeric(25,5))	sum_xy
-				,cast(sum(x2) as numeric(25,5))	sum_x2
-				,cast(sum(y2) as numeric(25,5))	sum_y2
-				,(select 	count(*)
-				 from 		sample)		n
-	from 		elements	
+	select 	sum(x) 				sum_x
+		,sum(y)				sum_y
+		,cast(sum(xy) as numeric(25,5))	sum_xy
+		,cast(sum(x2) as numeric(25,5))	sum_x2
+		,cast(sum(y2) as numeric(25,5))	sum_y2
+		,(select 	count(*)
+		from 		sample)		n
+	from 	elements	
 )
 
 
-select 		round(
-			((
-				cast((n * sum_xy) as numeric(25,5)) 
-			 	- 
-			 	cast((sum_x * sum_y) as numeric(25,5))
-			)
-				/
-			(
-				sqrt(
-				((cast((n * sum_x2)as numeric(25,5)) 
-				 - 
-				 cast(power(sum_x, 2) as numeric(25,5)))) 
-				*
-				((cast((n * sum_y2) as numeric(25,5)) 
-				 - 
-				 cast(power(sum_y, 2) as numeric(25,5)))))
-			)), 3)							"Correlation Coefficent"
+select 	round(
+		((
+		cast((n * sum_xy) as numeric(25,5)) 
+		- 
+		cast((sum_x * sum_y) as numeric(25,5))
+		)
+		/
+		(
+		sqrt(
+		((cast((n * sum_x2)as numeric(25,5)) 
+		 - 
+		 cast(power(sum_x, 2) as numeric(25,5)))) 
+		*
+		((cast((n * sum_y2) as numeric(25,5)) 
+		 - 
+		 cast(power(sum_y, 2) as numeric(25,5)))))
+			)), 3)					"Correlation Coefficient"
 from 		agg_elements;
 
 /*
 14. What is the percentage of listings for each transmission type?
 */
 
-select 		transmission								"Transmission Type", 
-			concat(
-			round(
-			cast(count(*) as numeric)
-			/
-			(select 	cast(count(*) as numeric)
-			from 		vehicles
-			where		transmission is not null)
-			* 
-			100	
-				,2), '%') 						"Percentage of Listings"
+select 		transmission					"Transmission Type", 
+		concat(
+		round(
+		cast(count(*) as numeric)
+		/
+		(select cast(count(*) as numeric)
+		from 	vehicles
+		where	transmission is not null)
+		* 
+		100	,2), '%') 				"Percentage of Listings"
 from 		vehicles v
 where 		transmission is not null
 group by	transmission
@@ -361,16 +357,15 @@ with sample as (
 )
 
 select 		round((
-			sum(power((s.price - mean.x_bar),2))
-			/
-			(
-				(select 	count(*)
-				from 		sample)
-				-
-				1
-			)
-			), 2)					"Variance"
-			,year					"Year"
+		sum(power((s.price - mean.x_bar),2))
+		/
+		(
+			(select 	count(*)
+			from 		sample)
+			-
+			1
+		)), 2)					"Variance"
+		,year					"Year"
 from 		sample s
 		,(select	avg(price) "x_bar"
 		from		sample) mean
@@ -381,15 +376,15 @@ order by 	year desc;
 17. How many listings have images associated with them versus those that do not?
 */
 
-select 		'# of Listings w/ Image' 	"Category"
-		,count(*)			"Total"		
-from 		vehicles 
-where 		length(image_url) > 0
+select 	'# of Listings w/ Image' 	"Category"
+	,count(*)			"Total"		
+from 	vehicles 
+where 	length(image_url) > 0
 union
-select 		'# of Listings w/o Image' 	"Category"
-		,count(*)			"Total"		
-from 		vehicles 
-where 		length(image_url) < 1;
+select 	'# of Listings w/o Image' 	"Category"
+	,count(*)			"Total"		
+from 	vehicles 
+where 	length(image_url) < 1;
 
 /*
 18. What is the most common number of cylinders in the vehicles listed?
@@ -432,7 +427,7 @@ with state_prices as (
 	group by	state 
 )
 
-select 		*
-		,row_number() over(order by "Average Price" desc) "Rank"
-from 		state_prices
-limit 		3;
+select 	*
+	,row_number() over(order by "Average Price" desc) "Rank"
+from 	state_prices
+limit 	3;
