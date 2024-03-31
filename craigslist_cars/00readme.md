@@ -31,7 +31,7 @@ The project explores various aspects of the cars and trucks listed on Craigslist
 - Postgres SQL or any SQL-compatible database system.
 
 ## Getting Started
-1. Download the Craigslist cars and trucks dataset from Kaggle: [Craigslist Carstrucks Data](https://www.kaggle.com/datasets/austinreese/craigslist-carstrucks-data).
+1. Download the Craigslist cars and trucks dataset from Kaggle: [Craigslist Used Cars](https://www.kaggle.com/datasets/austinreese/craigslist-carstrucks-data).
 2. Ensure Postgres SQL Server or your chosen SQL database system is installed and configured on your system.
 3. Import the dataset into your SQL database using the provided `00main.sql` file to create and populate your tables.
 4. Run the SQL queries specified in the project to analyze the dataset and extract meaningful insights.
