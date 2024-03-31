@@ -3,7 +3,6 @@
 */
 
 with jobs_by_experience as (
-    
     select                                                          * 
                 ,row_number() over (partition by experience_level 
                                     order by Occurrence desc)       rank      
