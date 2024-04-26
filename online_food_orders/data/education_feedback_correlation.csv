@@ -1,0 +1,11 @@
+Educational_Qualifications,Feedback,Count,% of Orders in Education Level
+Uneducated,Positive,1,50 %
+Uneducated,"Negative ",1,50 %
+School,Positive,9,75 %
+School,"Negative ",3,25 %
+Post Graduate,Positive,154,88.51 %
+Post Graduate,"Negative ",20,11.49 %
+Ph.D,Positive,18,78.26 %
+Ph.D,"Negative ",5,21.74 %
+Graduate,Positive,135,76.27 %
+Graduate,"Negative ",42,23.73 %
